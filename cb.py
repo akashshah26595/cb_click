@@ -51,11 +51,13 @@ def createSnapshot(config):
 		click.echo((data))
 	else:
 		click.echo('Error while fetching data', str(webUrl.getcode()))
-'''
+
 @display.command()
 @pass_config
-def viewSnapshots(config):
-	urlData = config.url + "apiKey=" + config.key + "&command=" + config.cb_command + "&id=" + config.cinder_id  + "&name=" + config.name +"&response=" + config.res 
+def viewsnapshots(config):
+	"""This method displays all the snapshots for given cinder id"""
+	#listStorageSnapshots
+	urlData = config.url + "apiKey=" + config.key + "&command=" + config.cb_command + "&id=" + config.cinder_id  +"&response=" + config.res 
 	click.echo(urlData)
 	webUrl = urllib2.urlopen(urlData)
 	click.echo(webUrl.getcode())
