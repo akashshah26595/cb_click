@@ -10,12 +10,12 @@
 
 * Extract the files 
 
-* Change the directory in terminal to click_test1
+* Change the directory in terminal to cb_click-master/
    ```
-	$ cd click_test1
+	$ cd cb_click-master/
    ```
 
-* Execute this command in the terminal(or Command Prompt)
+* Execute this command in the terminal(or Command Prompt). This will install this CLI.
    ```
 	$ pip install --editable .
     ```
