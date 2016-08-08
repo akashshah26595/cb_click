@@ -12,12 +12,12 @@
 
 * Change the directory in terminal to click_test1
    ```
-   $ cd click_test1
+	$ cd click_test1
    ```
 
 * Execute this command in the terminal(or Command Prompt)
    ```
-    $ pip install --editable .
+	$ pip install --editable .
     ```
 
 ##Note:
@@ -27,36 +27,36 @@
 	This is the default cinder_id.
 
 ##How to use this CLI
-* To display help page, syntax or available commands.
+* ####To display help page, syntax or available commands.
  ```
   $ cb 
   $ cb --help
  ```  
 
-* View all the snapshots of this volume
+* ####View all the snapshots of this volume
    ```
-      $ cb 77b26fc7-066e-3057-b131-e77b4f6835cc viewsnapshots
-   ```
-
-* Create a new snapshot
-   ```
-      $ cb 77b26fc7-066e-3057-b131-e77b4f6835cc createsnapshot	   	 
-   	Enter snapshot name:
-   	snap2
+	$ cb 77b26fc7-066e-3057-b131-e77b4f6835cc viewsnapshots
    ```
 
-* Delete a particular snapshot
+* ####Create a new snapshot
    ```
-      $ cb 77b26fc7-066e-3057-b131-e77b4f6835cc deletesnapshot
-       Enter snapshot name to delete:
-       snap1
+	$ cb 77b26fc7-066e-3057-b131-e77b4f6835cc createsnapshot	   	 
+	  Enter snapshot name:
+	  snap2
    ```
 
-* Rollback to a particular snapshot
+* ####Delete a particular snapshot
    ```
-   $ cb 77b26fc7-066e-3057-b131-e77b4f6835cc rollbacktosnapshot
-     Enter a snapshot name to rollback:
-     snap2
+	$ cb 77b26fc7-066e-3057-b131-e77b4f6835cc deletesnapshot
+	  Enter snapshot name to delete:
+	  snap1
+   ```
+
+* ####Rollback to a particular snapshot
+   ```
+	$ cb 77b26fc7-066e-3057-b131-e77b4f6835cc rollbacktosnapshot
+	  Enter a snapshot name to rollback:
+	  snap2
    ```
 
 
