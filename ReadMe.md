@@ -1,8 +1,8 @@
 #CloudByte Click CLI
 
 ##Prerequisites:
-1) Python 2.7
-2) python-pip for python 2
+* Python 2.7
+* python-pip for python 2
 
 
 ##How to Install this CLI on Linux OR on Windows?
@@ -11,12 +11,16 @@
 * Extract the files 
 
 * Change the directory in terminal to click_test1
-   `$ cd click_test1`
+   ```
+   $ cd click_test1
+   ```
 
 * Execute this command in the terminal(or Command Prompt)
-   `$ pip install --editable .`
+   ```
+    $ pip install --editable .
+    ```
 
-Note:
+##Note:
 	
 	CINDER_ID is the cinder volume id, with hyphens(-). 
 	Example: 77b26fc7-066e-3057-b131-e77b4f6835cc
@@ -44,15 +48,15 @@ Note:
 * Delete a particular snapshot
    ```
    $ cb 77b26fc7-066e-3057-b131-e77b4f6835cc deletesnapshot
-   Enter snapshot name to delete:
-   snap1
+     Enter snapshot name to delete:
+     snap1
    ```
 
 * Rollback to a particular snapshot
    ```
    $ cb 77b26fc7-066e-3057-b131-e77b4f6835cc rollbacktosnapshot
-   Enter a snapshot name to rollback:
-   snap2
+     Enter a snapshot name to rollback:
+     snap2
    ```
 
 
