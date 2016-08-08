@@ -24,7 +24,7 @@
 	
 	CINDER_ID is the cinder volume id, with hyphens(-). 
 	Example: 77b26fc7-066e-3057-b131-e77b4f6835cc
-	This is the **default** cinder_id.
+	This is the default cinder_id.
 
 ##How to use this CLI
 * To display help page, syntax or available commands.
@@ -35,21 +35,21 @@
 
 * View all the snapshots of this volume
    ```
-   $ cb 77b26fc7-066e-3057-b131-e77b4f6835cc viewsnapshots
+      $ cb 77b26fc7-066e-3057-b131-e77b4f6835cc viewsnapshots
    ```
 
 * Create a new snapshot
    ```
       $ cb 77b26fc7-066e-3057-b131-e77b4f6835cc createsnapshot	   	 
-   	 Enter snapshot name:
-   	 snap2
+   	Enter snapshot name:
+   	snap2
    ```
 
 * Delete a particular snapshot
    ```
-   $ cb 77b26fc7-066e-3057-b131-e77b4f6835cc deletesnapshot
-     Enter snapshot name to delete:
-     snap1
+      $ cb 77b26fc7-066e-3057-b131-e77b4f6835cc deletesnapshot
+       Enter snapshot name to delete:
+       snap1
    ```
 
 * Rollback to a particular snapshot
