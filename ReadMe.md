@@ -15,7 +15,7 @@
 	$ cd cb_click-master/
    ```
 
-* Execute this command in the terminal(or Command Prompt). This will install this CLI.
+* Execute this command in the terminal(or Command Prompt). This will install CLI.
    ```
 	$ pip install --editable .
     ```
