@@ -1,5 +1,4 @@
 from setuptools import setup
-
 setup(
 name='CloudByte',
 version='1.0',
