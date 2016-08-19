@@ -12,7 +12,7 @@ class Config(object):
 pass_config = click.make_pass_decorator(Config,ensure=True)
 
 @click.group()
-@click.option('cinder_id',default='77b26fc7-066e-3057-b131-e77b4f6835cc')
+#@click.option('cinder_id',default='77b26fc7-066e-3057-b131-e77b4f6835cc')
 
 @pass_config
 
@@ -30,7 +30,8 @@ def display(config,cinder_id):
 	config.key=key;
 	config.url=url;
 	config.res=res;
-
+	checkLibvirtVersion()
+	
 def parseJSON(config,data):
 	json_data = json.loads(data)
 	paths = []
@@ -152,3 +153,13 @@ def listSnapshots(config):
 		return data
 	else:
 		click.echo('Error while fetching data', str(webUrl.getcode()))
+
+
+def checkLibvirtVersion():
+	p = subprocess.Popen("./libvirt_version.sh",stdout=subprocess.PIPE,shell=True)
+	(out,err) = p.communicate()
+	p_status = p.wait()
+	op = out.split()
+	if op!="1.2.11":
+		click.echo('Incorrect libvirt version detected. Please update it to v1.2.11');
+	
