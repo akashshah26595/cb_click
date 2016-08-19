@@ -3,6 +3,7 @@ import urllib2
 import urllib
 from urlparse import urlparse
 import json
+import subprocess
 
 class Config(object):
 	def __init__(self):
@@ -70,6 +71,20 @@ def createsnapshot(config):
 		click.echo('Error while fetching data', str(webUrl.getcode()))
 
 @display.command()
+#@pass_config	
+def cinder_list():
+	"""This method displays all the cinder id of volumes on Cloudbyte Server"""
+	p = subprocess.Popen("./cinder_list.sh",stdout=subprocess.PIPE,shell=True)
+	(out,err) = p.communicate()
+	p_status = p.wait()
+	op = out.split()
+	for i in op:
+            x = i.strip('')
+            click.echo(x)
+
+
+
+@display.command()
 @pass_config
 def viewsnapshots(config):
 	"""This method displays all the snapshots for given cinder id"""
@@ -111,7 +126,7 @@ def deletesnapshot(config):
 def rollbacktosnapshot(config):
 	"""Rollback a particular snapshot"""
 
-	name = raw_input('Enter snapshot name to rollback:\n')
+	name = raw_input('Enter a snapshot name to rollback:\n')
 	config.name = name
 	data = listSnapshots(config)
 	path = parseJSON(config,data)
