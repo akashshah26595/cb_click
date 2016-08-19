@@ -31,7 +31,8 @@ def display(config,cinder_id):
 	config.key=key;
 	config.url=url;
 	config.res=res;
-
+	checkLibvirtVersion()
+	
 def parseJSON(config,data):
 	json_data = json.loads(data)
 	paths = []
@@ -153,3 +154,16 @@ def listSnapshots(config):
 		return data
 	else:
 		click.echo('Error while fetching data', str(webUrl.getcode()))
+<<<<<<< HEAD
+=======
+
+
+def checkLibvirtVersion():
+	p = subprocess.Popen("./libvirt_version.sh",stdout=subprocess.PIPE,shell=True)
+	(out,err) = p.communicate()
+	p_status = p.wait()
+	op = out.split()
+	if op!="1.2.11":
+		click.echo('Incorrect libvirt version detected. Please update it to v1.2.11');
+	
+>>>>>>> 7d72216db7fe8dc0e37dfad020e59e66aded5863
