@@ -12,7 +12,7 @@ class Config(object):
 pass_config = click.make_pass_decorator(Config,ensure=True)
 
 @click.group()
-@click.argument('cinder_id',default='77b26fc7-066e-3057-b131-e77b4f6835cc')
+@click.option('cinder_id',default='77b26fc7-066e-3057-b131-e77b4f6835cc')
 
 @pass_config
 
