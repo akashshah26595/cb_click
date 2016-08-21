@@ -1,3 +1,4 @@
+import sys
 import click
 import urllib2
 import urllib
@@ -31,8 +32,8 @@ def display(config,cinder_id):
 	config.key=key;
 	config.url=url;
 	config.res=res;
-	#libvirt_ver()
-	
+	libvirt_ver()
+	temp()
 def parseJSON(config,data):
 	json_data = json.loads(data)
 	paths = []
@@ -155,13 +156,20 @@ def listSnapshots(config):
 	else:
 		click.echo('Error while fetching data', str(webUrl.getcode()))
 
-@display.command()
+#@display.command()
 def libvirt_ver():
 	p = subprocess.Popen("./libvirt_version.sh",stdout=subprocess.PIPE,shell=True)
 	(out,err) = p.communicate()
 	p_status = p.wait()
-	op = out.split()
-	if op!="1.2.11":
-		click.echo('Incorrect libvirt version detected. Please update it to v1.2.11');
+	op = str(out).strip()
+#	op = "1.2.12"
+	click.echo('Libvirt Version: %s' %op)
+	
+	if op == "1.2.11":
+		click.echo('Correct libvirt version');
 	else:
-		click.echo('Livirt version correct')	
+		click.echo('Please update your libvirt version to 1.2.11')	
+		sys.exit(2)
+
+def temp():
+	click.echo('Hello World!')
