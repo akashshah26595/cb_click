@@ -5,6 +5,7 @@ import urllib
 from urlparse import urlparse
 import json
 import subprocess
+import shlex
 
 class Config(object):
 	def __init__(self):
@@ -69,6 +70,22 @@ def createsnapshot(config):
 		sys.exit(2)
 	urlData = config.url + "apiKey=" + config.key + "&command=createStorageSnapshot"  + "&id=" + config.cinder_id  + "&name=" + config.name +"&response=" + config.res 
 	click.echo(urlData)
+	
+	#Freezing the filesystem
+	p = subprocess.Popen("./virsh_check.sh | awk ' $2!=\"Name\" {print $2}'",stdout=subprocess.PIPE,shell=True)
+	(out,err) = p.communicate()
+	p_status = p.wait()
+	op = out.split()
+	intances = []
+	for i in op:
+            x = i.strip('",')
+            instances.append(x)
+
+
+    inst = instances[0]
+	p=subprocess.call(shlex.split('./freeze.sh %s' %(inst)))
+	
+	##Ends
 	webUrl = urllib2.urlopen(urlData)
 	click.echo(urlData)
 	if(webUrl.getcode() == 200):
@@ -76,6 +93,10 @@ def createsnapshot(config):
 		click.echo(data)
 	else:
 		click.echo('Error while fetching data', str(webUrl.getcode()))
+	
+	#Thawing the filesystem
+	p=subprocess.call(shlex.split('./thaw.sh %s' %inst))
+
 
 @display.command()
 #@pass_config	
@@ -143,6 +164,7 @@ def deletesnapshot(config):
 def rollbacktosnapshot(config):
 	"""Rollback a particular snapshot"""
 	
+
 	if(config.cinder_id=="" or config.name==""):
                 print('Test') 
                 sys.exit(2)
@@ -156,6 +178,21 @@ def rollbacktosnapshot(config):
 	if path is None:
 		return 'No such snapshot'
 	
+	#Freezing the filesystem
+	p = subprocess.Popen("./virsh_check.sh | awk ' $2!=\"Name\" {print $2}'",stdout=subprocess.PIPE,shell=True)
+	(out,err) = p.communicate()
+	p_status = p.wait()
+	op = out.split()
+	intances = []
+	for i in op:
+            x = i.strip('",')
+            instances.append(x)
+
+
+    inst = instances[0]
+	p=subprocess.call(shlex.split('./freeze.sh %s' %(inst)))
+	
+	##Ends
 	urlData = config.url + "apiKey=" + config.key + "&command=rollbackToSnapshot"  + "&id=" + config.cinder_id + "&path="  + path  + "&response=" + config.res 
 	click.echo(urlData)
 	webUrl = urllib2.urlopen(urlData)
@@ -167,6 +204,9 @@ def rollbacktosnapshot(config):
 	else:
 		click.echo('Error while fetching data', str(webUrl.getcode()))		
 	
+	#Thawing the filesystem
+	p=subprocess.call(shlex.split('./thaw.sh %s' %inst))
+
 def listSnapshots(config,cinder_id):
 	urlData = config.url + "apiKey=" + config.key + "&command=" + "listStorageSnapshots" + "&id=" + cinder_id  +"&response=" + config.res 
 	webUrl = urllib2.urlopen(urlData)
