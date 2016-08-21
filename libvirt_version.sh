@@ -1,1 +1,1 @@
-libvirtd --version | awk '{print $3} '
+libvirtd --version | awk '{print $3}'

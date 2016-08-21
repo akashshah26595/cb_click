@@ -160,8 +160,8 @@ def libvirt_ver():
 	p = subprocess.Popen("./libvirt_version.sh",stdout=subprocess.PIPE,shell=True)
 	(out,err) = p.communicate()
 	p_status = p.wait()
-	op = out.split()
-	if op!="1.2.11":
+	#op = out.split()
+	if op=="1.2.11":
 		click.echo('Incorrect libvirt version detected. Please update it to v1.2.11');
 	else:
 		click.echo('Livirt version correct')	
