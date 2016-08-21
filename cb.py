@@ -13,7 +13,7 @@ class Config(object):
 pass_config = click.make_pass_decorator(Config,ensure=True)
 
 @click.group()
-@click.option('--cinder_id',default='77b26fc7-066e-3057-b131-e77b4f6835cc')
+#@click.option('--cinder_id',default='77b26fc7-066e-3057-b131-e77b4f6835cc')
 #@click.option('--cinder_id',default='77b26fc7-066e-3057-b131-e77b4f6835cc',help='Cinder Volume ID')
 
 @pass_config
@@ -59,10 +59,10 @@ def parseJSON(config,data):
 @pass_config	
 def createsnapshot(config):
 	"""This method creates a snapshot for provided cinder id"""
-	
+		
 	name = raw_input('Enter a snapshot name:\n')
 	config.name = name
-
+	
 	urlData = config.url + "apiKey=" + config.key + "&command=createStorageSnapshot"  + "&id=" + config.cinder_id  + "&name=" + config.name +"&response=" + config.res 
 	click.echo(urlData)
 	webUrl = urllib2.urlopen(urlData)
