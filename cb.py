@@ -59,11 +59,12 @@ def parseJSON(config,data):
 @pass_config	
 def createsnapshot(config):
 	"""This method creates a snapshot for provided cinder id"""
-		
-	name = raw_input('Enter a snapshot name:\n')
-	config.name = name
+	@click.argument('cinder_id',help='Cinder Volume ID')	
+	@click.argument('name',help='Name of Snapshot to be created')
+	#name = raw_input('Enter a snapshot name:\n')
+	#config.name = name
 	
-	urlData = config.url + "apiKey=" + config.key + "&command=createStorageSnapshot"  + "&id=" + config.cinder_id  + "&name=" + config.name +"&response=" + config.res 
+	urlData = config.url + "apiKey=" + config.key + "&command=createStorageSnapshot"  + "&id=" + cinder_id  + "&name=" + name +"&response=" + config.res 
 	click.echo(urlData)
 	webUrl = urllib2.urlopen(urlData)
 	click.echo(urlData)
@@ -91,8 +92,8 @@ def cinder_list():
 @pass_config
 def viewsnapshots(config):
 	"""This method displays all the snapshots for given cinder id"""
-
-	urlData = config.url + "apiKey=" + config.key + "&command=listStorageSnapshots"  + "&id=" + config.cinder_id  +"&response=" + config.res 
+	@click.argument('cinder_id',help='Cinder Volume ID')
+	urlData = config.url + "apiKey=" + config.key + "&command=listStorageSnapshots"  + "&id=" + cinder_id  +"&response=" + config.res 
 	webUrl = urllib2.urlopen(urlData)
 	click.echo(urlData)
 	if(webUrl.getcode() == 200):
@@ -106,11 +107,12 @@ def viewsnapshots(config):
 @pass_config
 def deletesnapshot(config):
 	"""Delete a particular snapshot"""
-
-	name = raw_input('Enter snapshot name to delete:\n')
-	config.name = name
+	@click.argument('cinder_id',help='Cinder Volume ID')
+	@click.argument('name',help='Name of Snapshot to be deleted')
+	#name = raw_input('Enter snapshot name to delete:\n')
+	#config.name = name
 	print 'Snapshot to be deleted:' , config.name
-	data = listSnapshots(config)
+	data = listSnapshots(config,cinder_id)
 	path = parseJSON(config,data)
 	if path is None:
 		return 'No such snapshot'
@@ -129,14 +131,16 @@ def deletesnapshot(config):
 def rollbacktosnapshot(config):
 	"""Rollback a particular snapshot"""
 
-	name = raw_input('Enter a snapshot name to rollback:\n')
-	config.name = name
-	data = listSnapshots(config)
+	#name = raw_input('Enter a snapshot name to rollback:\n')
+	#config.name = name
+	@click.argument('cinder_id',help='Cinder Volume ID')
+	@click.argument('name',help='Name of Snapshot to be rolled back')
+	data = listSnapshots(config,cinder_id)
 	path = parseJSON(config,data)
 	if path is None:
 		return 'No such snapshot'
 	
-	urlData = config.url + "apiKey=" + config.key + "&command=rollbackToSnapshot"  + "&id=" + config.cinder_id + "&path="  + path  + "&response=" + config.res 
+	urlData = config.url + "apiKey=" + config.key + "&command=rollbackToSnapshot"  + "&id=" + cinder_id + "&path="  + path  + "&response=" + config.res 
 	webUrl = urllib2.urlopen(urlData)
 	click.echo(urlData)
 	if(webUrl.getcode() == 200):
@@ -146,8 +150,8 @@ def rollbacktosnapshot(config):
 	else:
 		click.echo('Error while fetching data', str(webUrl.getcode()))		
 	
-def listSnapshots(config):
-	urlData = config.url + "apiKey=" + config.key + "&command=" + "listStorageSnapshots" + "&id=" + config.cinder_id  +"&response=" + config.res 
+def listSnapshots(config,cinder_id):
+	urlData = config.url + "apiKey=" + config.key + "&command=" + "listStorageSnapshots" + "&id=" + cinder_id  +"&response=" + config.res 
 	webUrl = urllib2.urlopen(urlData)
 	click.echo(webUrl.getcode())
 	if(webUrl.getcode() == 200):
