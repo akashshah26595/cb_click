@@ -19,7 +19,7 @@ pass_config = click.make_pass_decorator(Config,ensure=True)
 
 @pass_config
 
-def display(config,cinder_id,name):
+def display(config,cinder_id="",name=""):
 	key_file = open('cbkey.txt','r')
 	url_file = open('cburl.txt','r')
 	res_file = open('cbres.txt','r')
@@ -77,9 +77,15 @@ def mapCinderToID(config,data):
 def createsnapshot(config):
 	"""This method creates a snapshot for provided cinder id"""
 	
-	# if(len(config.name) ==0 or len(config.cinder_id))==0:
-	# 	print('Test')	
-	# 	sys.exit(2)
+	if config.name is None or config.cinder_id is None:
+	 	if config.name is None:
+			print("\nPlease enter snapshot name.\n")
+			#p = subprocess.call("cb --help",shell=True)
+		if config.cinder_id is None:
+			print("\nPlease enter Cinder ID\n")	
+			#p = subprocess.call("cb --help",shell=True)
+		p = subprocess.call("cb --help",shell=True) 	
+		sys.exit(2)
 	data = listFileSystem(config)
 	config.id=mapCinderToID(config,data)
 	if config.id==0:
@@ -132,10 +138,14 @@ def cinder_list():
 def viewsnapshots(config):
 	"""This method displays all the snapshots for given cinder id"""
 	
-	# if(config.cinder_id==""):
- 	#   print('Test') 
-	# 	sys.exit(2)
 	
+	if config.cinder_id is None:
+	 	if config.cinder_id is None:
+			print("\nPlease enter Cinder ID\n")	
+			#p = subprocess.call("cb --help",shell=True)
+		p = subprocess.call("cb --help",shell=True) 	
+		sys.exit(2)
+
 	data = listFileSystem(config)
 	config.id=mapCinderToID(config,data)
 	if config.id==0:
@@ -148,7 +158,7 @@ def viewsnapshots(config):
 	#click.echo(urlData)
 	if(webUrl.getcode() == 200):
 		data = webUrl.read()
-		click.echo((data))
+		click.echo(data)
 	else:
 		click.echo('Error while fetching data', str(webUrl.getcode()))	
 
@@ -158,10 +168,16 @@ def viewsnapshots(config):
 def deletesnapshot(config):
 	"""Delete a particular snapshot"""
 	
-	# if(config.cinder_id=="" or config.name==""):
- 	#       print('Test') 
- 	#       sys.exit(2)
-
+	if config.name is None or config.cinder_id is None:
+	 	if config.name is None:
+			print("\nPlease enter snapshot name.\n")
+			#p = subprocess.call("cb --help",shell=True)
+		if config.cinder_id is None:
+			print("\nPlease enter Cinder ID\n")	
+			#p = subprocess.call("cb --help",shell=True)
+		p = subprocess.call("cb --help",shell=True) 	
+		sys.exit(2)
+	
  	data1 = listFileSystem(config)
 	config.id=mapCinderToID(config,data1)
 	if config.id==0:
@@ -180,6 +196,7 @@ def deletesnapshot(config):
 	if(webUrl.getcode() == 200):
 		data = webUrl.read()
 		click.echo('Delete successful')
+		click.echo(data)
 	else:
 		click.echo('Error while fetching data', str(webUrl.getcode()))
 
@@ -189,11 +206,17 @@ def deletesnapshot(config):
 def rollbacktosnapshot(config):
 	"""Rollback a particular snapshot"""
 	
+	if config.name is None or config.cinder_id is None:
+	 	if config.name is None:
+			print("\nPlease enter snapshot name.\n")
+			#p = subprocess.call("cb --help",shell=True)
+		if config.cinder_id is None:
+			print("\nPlease enter Cinder ID\n")	
+			#p = subprocess.call("cb --help",shell=True)
+		p = subprocess.call("cb --help",shell=True) 	
+		sys.exit(2)
 
-	# if(config.cinder_id=="" or config.name==""):
- 	#      print('Test') 
- 	#      sys.exit(2)
-
+	
  	data1 = listFileSystem(config)
 	config.id=mapCinderToID(config,data1)
 	if config.id==0:
@@ -246,7 +269,7 @@ def listSnapshots(config):
 def listFileSystem(config):
 	urlData = config.url + "apiKey=" + config.key + "&command=" + "listFileSystem" +"&response=" + config.res 
 	webUrl = urllib2.urlopen(urlData)
-	click.echo(webUrl)
+	#click.echo(webUrl)
 	click.echo(webUrl.getcode())
 	if(webUrl.getcode() == 200):
 		data = webUrl.read()
