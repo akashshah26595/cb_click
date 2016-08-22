@@ -93,13 +93,11 @@ def createsnapshot(config):
 	(out,err) = p.communicate()
 	p_status = p.wait()
 	op = out.split()
-	intances = []
+	instances = []
 	for i in op:
-            x = i.strip('",')
-            instances.append(x)
-
-
-    inst = instances[0]
+            	x = i.strip('",')
+            	instances.append(x)
+	inst=instances[0]
 	p=subprocess.call(shlex.split('./freeze.sh %s' %(inst)))
 	
 	##Ends
@@ -212,13 +210,11 @@ def rollbacktosnapshot(config):
 	(out,err) = p.communicate()
 	p_status = p.wait()
 	op = out.split()
-	intances = []
+	instances = []
 	for i in op:
-            x = i.strip('",')
-            instances.append(x)
-
-
-    inst = instances[0]
+            	x = i.strip('",')
+            	instances.append(x)
+	inst = instances[0]
 	p=subprocess.call(shlex.split('./freeze.sh %s' %(inst)))
 	
 	##Ends
