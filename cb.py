@@ -34,7 +34,7 @@ def display(config,cinder_id,name):
 	config.url=url;
 	config.res=res;
 	libvirt_ver()
-	temp()
+	#temp()
 def parseJSON(config,data):
 	json_data = json.loads(data)
 	paths = []
@@ -53,6 +53,22 @@ def parseJSON(config,data):
  		return path
 	except:
 		click.echo('Error!')
+
+def mapCinderToID(config,data):
+	json_data = json.loads(data)
+	cinder = config.cinder_id
+	cinder = cinder.replace("-","")
+	id=""
+	for i in json_data["listFilesystemResponse"]['filesystem']:
+		x = str(i['name'])
+		if x==cinder:
+			id=str(i['id'])
+			break
+	if id=="":
+		print "Cinder To ID Failed"
+		return 0
+	else:
+		return id		
 			
 
 
@@ -60,15 +76,16 @@ def parseJSON(config,data):
 @pass_config	
 def createsnapshot(config):
 	"""This method creates a snapshot for provided cinder id"""
-	#@click.option('cinder_id',help='Cinder Volume ID')	
-	#@click.option('name',help='Name of Snapshot to be created')
-	#name = raw_input('Enter a snapshot name:\n')
-	#config.name = name
-
-	if(len(config.name) ==0 or len(config.cinder_id))==0:
-		print('Test')	
-		sys.exit(2)
-	urlData = config.url + "apiKey=" + config.key + "&command=createStorageSnapshot"  + "&id=" + config.cinder_id  + "&name=" + config.name +"&response=" + config.res 
+	
+	# if(len(config.name) ==0 or len(config.cinder_id))==0:
+	# 	print('Test')	
+	# 	sys.exit(2)
+	data = listFileSystem(config)
+	config.id=mapCinderToID(config,data)
+	if config.id==0:
+		print "No UUID found for given cinder id"
+		sys.exit(127)
+	urlData = config.url + "apiKey=" + config.key + "&command=createStorageSnapshot"  + "&id=" + config.id  + "&name=" + config.name +"&response=" + config.res 
 	click.echo(urlData)
 	
 	#Freezing the filesystem
@@ -116,11 +133,18 @@ def cinder_list():
 @pass_config
 def viewsnapshots(config):
 	"""This method displays all the snapshots for given cinder id"""
-	#@click.option('cinder_id',help='Cinder Volume ID')
-	if(config.cinder_id==""):
-                print('Test') 
-		sys.exit(2)
-	urlData = config.url + "apiKey=" + config.key + "&command=listStorageSnapshots"  + "&id=" + config.cinder_id  +"&response=" + config.res 
+	
+	# if(config.cinder_id==""):
+ 	#   print('Test') 
+	# 	sys.exit(2)
+	
+	data = listFileSystem(config)
+	config.id=mapCinderToID(config,data)
+	if config.id==0:
+		print "No UUID found for given cinder id"
+		sys.exit(127)
+
+	urlData = config.url + "apiKey=" + config.key + "&command=listStorageSnapshots"  + "&id=" + config.id  +"&response=" + config.res 
 	click.echo(urlData)
 	webUrl = urllib2.urlopen(urlData)
 	#click.echo(urlData)
@@ -135,23 +159,26 @@ def viewsnapshots(config):
 @pass_config
 def deletesnapshot(config):
 	"""Delete a particular snapshot"""
-	#@click.option('cinder_id',help='Cinder Volume ID')
-	#@click.option('name',help='Name of Snapshot to be deleted')
-	#name = raw_input('Enter snapshot name to delete:\n')
-	#config.name = name
-	if(config.cinder_id=="" or config.name==""):
-                print('Test') 
-                sys.exit(2)
+	
+	# if(config.cinder_id=="" or config.name==""):
+ 	#       print('Test') 
+ 	#       sys.exit(2)
+
+ 	data1 = listFileSystem(config)
+	config.id=mapCinderToID(config,data1)
+	if config.id==0:
+		print "No UUID found for given cinder id"
+		sys.exit(127)
 
 	print 'Snapshot to be deleted:' , config.name
-	data = listSnapshots(config,cinder_id)
+	data = listSnapshots(config)
 	path = parseJSON(config,data)
 	if path is None:
 		return 'No such snapshot'
-	urlData = config.url + "apiKey=" + config.key + "&command=deleteSnapshot" + "&id=" + config.cinder_id + "&path="  + path  + "&response=" + config.res 
-	ckick.echo(urlData)
-	webUrl = urllib2.urlopen(urlData)
+	urlData = config.url + "apiKey=" + config.key + "&command=deleteSnapshot" + "&id=" + config.id + "&path="  + path  + "&response=" + config.res 
 	click.echo(urlData)
+	webUrl = urllib2.urlopen(urlData)
+	#click.echo(urlData)
 	if(webUrl.getcode() == 200):
 		data = webUrl.read()
 		click.echo('Delete successful')
@@ -165,15 +192,17 @@ def rollbacktosnapshot(config):
 	"""Rollback a particular snapshot"""
 	
 
-	if(config.cinder_id=="" or config.name==""):
-                print('Test') 
-                sys.exit(2)
+	# if(config.cinder_id=="" or config.name==""):
+ 	#      print('Test') 
+ 	#      sys.exit(2)
 
-	#name = raw_input('Enter a snapshot name to rollback:\n')
-	#config.name = name
-	#@click.option('cinder_id',help='Cinder Volume ID')
-	#@click.option('name',help='Name of Snapshot to be rolled back')
-	data = listSnapshots(config,cinder_id)
+ 	data1 = listFileSystem(config)
+	config.id=mapCinderToID(config,data1)
+	if config.id==0:
+		print "No UUID found for given cinder id"
+		sys.exit(127)
+
+	data = listSnapshots(config)
 	path = parseJSON(config,data)
 	if path is None:
 		return 'No such snapshot'
@@ -193,7 +222,7 @@ def rollbacktosnapshot(config):
 	p=subprocess.call(shlex.split('./freeze.sh %s' %(inst)))
 	
 	##Ends
-	urlData = config.url + "apiKey=" + config.key + "&command=rollbackToSnapshot"  + "&id=" + config.cinder_id + "&path="  + path  + "&response=" + config.res 
+	urlData = config.url + "apiKey=" + config.key + "&command=rollbackToSnapshot"  + "&id=" + config.id + "&path="  + path  + "&response=" + config.res 
 	click.echo(urlData)
 	webUrl = urllib2.urlopen(urlData)
 	#click.echo(urlData)
@@ -207,8 +236,8 @@ def rollbacktosnapshot(config):
 	#Thawing the filesystem
 	p=subprocess.call(shlex.split('./thaw.sh %s' %inst))
 
-def listSnapshots(config,cinder_id):
-	urlData = config.url + "apiKey=" + config.key + "&command=" + "listStorageSnapshots" + "&id=" + cinder_id  +"&response=" + config.res 
+def listSnapshots(config):
+	urlData = config.url + "apiKey=" + config.key + "&command=" + "listStorageSnapshots" + "&id=" + config.id  +"&response=" + config.res 
 	webUrl = urllib2.urlopen(urlData)
 	click.echo(webUrl)
 	click.echo(webUrl.getcode())
@@ -217,6 +246,17 @@ def listSnapshots(config,cinder_id):
 		return data
 	else:
 		click.echo('Error while fetching data', str(webUrl.getcode()))
+
+def listFileSystem(config):
+	urlData = config.url + "apiKey=" + config.key + "&command=" + "listFileSystem" +"&response=" + config.res 
+	webUrl = urllib2.urlopen(urlData)
+	click.echo(webUrl)
+	click.echo(webUrl.getcode())
+	if(webUrl.getcode() == 200):
+		data = webUrl.read()
+		return data
+	else:
+		click.echo('Error while fetching data', str(webUrl.getcode()))		
 
 #@display.command()
 def libvirt_ver():
@@ -232,5 +272,5 @@ def libvirt_ver():
 		click.echo('Please update your libvirt version to 1.2.11')
 	        sys.exit(2)
 
-def temp():
-	click.echo('Hello World!')
+# def temp():
+# 	click.echo('Hello World!')
