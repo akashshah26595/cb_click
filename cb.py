@@ -329,3 +329,34 @@ def cinder_status(config):
 #	    	print i,"\t",
 #	    	k=k+1
 #	print
+
+
+@display.command()
+@pass_config
+def glance_check(config):
+	
+	"""This method checks whether the bootable cinder volume has glance image stored on CB Storage"""	
+	#p = subprocess.Popen("./check glance.sh",stdout=subprocess.PIPE,shell=True)
+
+	if config.cinder_id is None:
+	 	if config.cinder_id is None:
+			print("\nPlease enter Cinder ID\n")	
+			#p = subprocess.call("cb --help",shell=True)
+		p = subprocess.call("cb --help",shell=True) 	
+		sys.exit(2)
+
+	p=subprocess.call(shlex.split('./check_glance.sh %s' %(config.cinder_id)))
+	(out,err) = p.communicate()
+	p_statusNot  = p.wait()
+	op = str(out).strip()
+	print op
+	#click.echo('Libvirt Version: %s' %op)
+	#k=0
+	#for i in op:
+#		if k==2:
+#			print "\n"
+#			k=0
+#	    	print i,"\t",
+#	    	k=k+1
+#	print
+
