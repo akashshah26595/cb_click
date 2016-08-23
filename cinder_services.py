@@ -6,8 +6,19 @@ p_status = p.wait()
 #tmp = os.popen("./t.sh").read()
 #print out
 op = out.split()
+#print(op)
+k=0
+#for i in op:
+#	if k==2:
+#		print "\n"
+#		k=0
+#	print("%-8s" %i),
+#	k+=1
 for i in op:
-            #x = i.strip('')
-            print x
-#print op
+    if k==2:
+        print "\n"
+        k=0
+    print i,"\t",
+    k=k+1
+print
 

@@ -1,0 +1,16 @@
+Script started on Tue Aug 23 07:56:40 2016
+]0;root@cbnew: ~/devstack/test/cb_clickroot@cbnew:~/devstack/test/cb_click# cinder service-list | awk '$10!="State" {print $10}'
+ERROR: You must provide a user name through --os-username or env[OS_USERNAME].
+]0;root@cbnew: ~/devstack/test/cb_clickroot@cbnew:~/devstack/test/cb_click# [Kcinder s list
+ERROR: You must provide a user name through --os-username or env[OS_USERNAME].
+]0;root@cbnew: ~/devstack/test/cb_clickroot@cbnew:~/devstack/test/cb_click# cd 
+]0;root@cbnew: ~root@cbnew:~# [K
+]0;root@cbnew: ~root@cbnew:~# cd ..     exit
+exit
+
+Script done on Tue Aug 23 07:57:21 2016
+Script started on Tue Aug 23 20:45:19 2016
+]0;root@cbnew: ~/devstack/test/cb_clickroot@cbnew:~/devstack/test/cb_click# exit
+exit
+
+Script done on Tue Aug 23 20:45:23 2016
