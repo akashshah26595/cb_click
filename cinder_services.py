@@ -1,7 +1,5 @@
 import subprocess
-import shlex
-
-p = subprocess.Popen("./virsh_check.sh | awk ' $2!=\"Name\" {print $2}'",stdout=subprocess.PIPE,shell=True)
+p = subprocess.Popen("./cinder_services.sh",stdout=subprocess.PIPE,shell=True)
 (out,err) = p.communicate()
 p_status = p.wait()
 #tmp = proc.stdout.read()
@@ -9,5 +7,7 @@ p_status = p.wait()
 #print out
 op = out.split()
 for i in op:
-            x = i.strip('",')
+            #x = i.strip('')
             print x
+#print op
+

@@ -34,6 +34,7 @@ def display(config,cinder_id="",name=""):
 	config.url=url;
 	config.res=res;
 	libvirt_ver()
+	qemu_check()
 	#temp()
 def parseJSON(config,data):
 	json_data = json.loads(data)
@@ -291,5 +292,35 @@ def libvirt_ver():
 		click.echo('Please update your libvirt version to 1.2.11')
 	        sys.exit(2)
 
+def qemu_check():
+	p = subprocess.Popen("./qemu_check.sh",stdout=subprocess.PIPE,shell=True)
+	(out,err) = p.communicate()
+	p_statusNot  = p.wait()
+	#op = str(out).strip()
+#	op = "1.2.12"
+	#click.echo('Libvirt Version: %s' %op)
+	if out == 0:
+		click.echo('KVM QEMU Enabled on VM');
+	else:
+		click.echo('KVM QEMU Not Enabled on VM. Exiting..')
+	        sys.exit(2)
 # def temp():
 # 	click.echo('Hello World!')
+
+@display.command()
+@pass_config
+def cinder_status(config):
+	"""This method displays status of cinder services"""	
+	p = subprocess.Popen("./cinder_services.sh",stdout=subprocess.PIPE,shell=True)
+	(out,err) = p.communicate()
+	p_statusNot  = p.wait()
+	op = str(out).strip()
+	#click.echo('Libvirt Version: %s' %op)
+	k=0
+	for i in op:
+		if k==2:
+			print "\n"
+			k=0
+	    print i,"\t",
+	    k=k+1
+	print
