@@ -1,4 +1,5 @@
 import sys
+
 import click
 import urllib2
 import urllib
@@ -293,15 +294,18 @@ def libvirt_ver():
 	        sys.exit(2)
 
 def qemu_check():
-	p = subprocess.Popen("./qemu_check.sh",stdout=subprocess.PIPE,shell=True)
-	(out,err) = p.communicate()
-	p_statusNot  = p.wait()
+	try:
+		p = subprocess.Popen("./qemu_check.sh",stdout=subprocess.PIPE,shell=True)
+		(out,err) = p.communicate()
+		p_statusNot  = p.wait()
+		#out = out.strip()
+		#print out
 	#op = str(out).strip()
 #	op = "1.2.12"
 	#click.echo('Libvirt Version: %s' %op)
-	if out == 0:
 		click.echo('KVM QEMU Enabled on VM');
-	else:
+	except:
+		
 		click.echo('KVM QEMU Not Enabled on VM. Exiting..')
 	        sys.exit(2)
 # def temp():
@@ -315,12 +319,13 @@ def cinder_status(config):
 	(out,err) = p.communicate()
 	p_statusNot  = p.wait()
 	op = str(out).strip()
+	print op
 	#click.echo('Libvirt Version: %s' %op)
-	k=0
-	for i in op:
-		if k==2:
-			print "\n"
-			k=0
-	    print i,"\t",
-	    k=k+1
-	print
+	#k=0
+	#for i in op:
+#		if k==2:
+#			print "\n"
+#			k=0
+#	    	print i,"\t",
+#	    	k=k+1
+#	print
