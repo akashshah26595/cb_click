@@ -1,5 +1,4 @@
 import subprocess
-import os
 p = subprocess.Popen("./final.sh",stdout=subprocess.PIPE,shell=True)
 (out,err) = p.communicate()
 p_status = p.wait()

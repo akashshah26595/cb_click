@@ -97,7 +97,8 @@ def createsnapshot(config):
 	click.echo(urlData)
 	
 	#Freezing the filesystem
-	p = subprocess.Popen("./qemu_check.sh | awk ' $2!=\"Name\" {print $2}'",stdout=subprocess.PIPE,shell=True)
+	#p = subprocess.Popen("./qemu_check.sh | awk ' $2!=\"Name\" {print $2}'",stdout=subprocess.PIPE,shell=True)
+	p = subprocess.Popen("./final.sh",stdout=subprocess.PIPE,shell=True)
 	(out,err) = p.communicate()
 	p_status = p.wait()
 	op = out.split()
@@ -105,7 +106,7 @@ def createsnapshot(config):
 	for i in op:
             	x = i.strip('",')
             	instances.append(x)
-	inst=instances[0]
+	inst=instances[1]
 	p=subprocess.call(shlex.split('./freeze.sh %s' %(inst)))
 	
 	##Ends
@@ -231,7 +232,7 @@ def rollbacktosnapshot(config):
 		return 'No such snapshot'
 	
 	#Freezing the filesystem
-	p = subprocess.Popen("./qemu_check.sh | awk ' $2!=\"Name\" {print $2}'",stdout=subprocess.PIPE,shell=True)
+	p = subprocess.Popen("./final.sh",stdout=subprocess.PIPE,shell=True)
 	(out,err) = p.communicate()
 	p_status = p.wait()
 	op = out.split()
@@ -239,7 +240,7 @@ def rollbacktosnapshot(config):
 	for i in op:
             	x = i.strip('",')
             	instances.append(x)
-	inst = instances[0]
+	inst=instances[1]
 	p=subprocess.call(shlex.split('./freeze.sh %s' %(inst)))
 	
 	##Ends
