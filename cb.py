@@ -97,7 +97,7 @@ def createsnapshot(config):
 	click.echo(urlData)
 	
 	#Freezing the filesystem
-	p = subprocess.Popen("./virsh_check.sh | awk ' $2!=\"Name\" {print $2}'",stdout=subprocess.PIPE,shell=True)
+	p = subprocess.Popen("./qemu_check.sh | awk ' $2!=\"Name\" {print $2}'",stdout=subprocess.PIPE,shell=True)
 	(out,err) = p.communicate()
 	p_status = p.wait()
 	op = out.split()
@@ -231,7 +231,7 @@ def rollbacktosnapshot(config):
 		return 'No such snapshot'
 	
 	#Freezing the filesystem
-	p = subprocess.Popen("./virsh_check.sh | awk ' $2!=\"Name\" {print $2}'",stdout=subprocess.PIPE,shell=True)
+	p = subprocess.Popen("./qemu_check.sh | awk ' $2!=\"Name\" {print $2}'",stdout=subprocess.PIPE,shell=True)
 	(out,err) = p.communicate()
 	p_status = p.wait()
 	op = out.split()
@@ -344,12 +344,16 @@ def glance_check(config):
 			#p = subprocess.call("cb --help",shell=True)
 		p = subprocess.call("cb --help",shell=True) 	
 		sys.exit(2)
-
-	p=subprocess.call(shlex.split('./check_glance.sh %s' %(config.cinder_id)))
+	cinder = config.cinder_id
+	p = subprocess.Popen(('./check_glance.sh %s' %(cinder)),stdout=subprocess.PIPE,shell=True)
 	(out,err) = p.communicate()
 	p_statusNot  = p.wait()
 	op = str(out).strip()
-	print op
+	if op is None or op=="":
+		click.echo("Volume not Bootable or Glance Image Not Hosted On Cloudbyte")
+	else:
+		print op
+		click.echo("Glance image is hosted on Cloudbyte")
 	#click.echo('Libvirt Version: %s' %op)
 	#k=0
 	#for i in op:
@@ -359,4 +363,16 @@ def glance_check(config):
 #	    	print i,"\t",
 #	    	k=k+1
 #	print
+
+#p = subprocess.Popen(('./check_glance.sh %s' %(cinder)),stdout=subprocess.PIPE,shell=True)
+#(out,err) = p.communicate()
+#print "OP:",out
+#p_statusNot  = p.wait()
+#op = str(out).strip()
+#print "Output:%s" %op
+#if op is None:
+#	print("Volume not Bootable or Glance Image Not Hosted On Cloudbyte")
+#else:
+#	print op
+#        print("Glance image is hosted on Cloudbyte")
 
