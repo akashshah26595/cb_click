@@ -6,8 +6,11 @@ p_status = p.wait()
 #tmp = os.popen("./t.sh").read()
 #print out
 op = out.split()
+arr = []
 for i in op:
-            x = i.strip('",')
-            print x
+	x = i.strip('",')
+	arr.append(x)
+	#print x
+print arr[1]		
 #print op
 
