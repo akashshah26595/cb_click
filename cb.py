@@ -77,7 +77,7 @@ def mapCinderToID(config,data):
 @display.command()
 @pass_config	
 def createsnapshot(config):
-	"""Creates a snapshot for provided cinder id"""
+	"""Creates a snapshot for given cinder id"""
 	
 	if config.name is None or config.cinder_id is None:
 	 	if config.name is None:
@@ -93,33 +93,34 @@ def createsnapshot(config):
 	if config.id==0:
 		print "No UUID found for given cinder id"
 		sys.exit(127)
-	urlData = config.url + "apiKey=" + config.key + "&command=createStorageSnapshot"  + "&id=" + config.id  + "&name=" + config.name +"&response=" + config.res 
-	click.echo(urlData)
+	try:
+		urlData = config.url + "apiKey=" + config.key + "&command=createStorageSnapshot"  + "&id=" + config.id  + "&name=" + config.name +"&response=" + config.res 
+		click.echo(urlData)
 	
-	#Freezing the filesystem
-	#p = subprocess.Popen("./qemu_check.sh | awk ' $2!=\"Name\" {print $2}'",stdout=subprocess.PIPE,shell=True)
-	p = subprocess.Popen("./final.sh",stdout=subprocess.PIPE,shell=True)
-	(out,err) = p.communicate()
-	p_status = p.wait()
-	op = out.split()
-	instances = []
-	for i in op:
-            	x = i.strip('",')
-            	instances.append(x)
-	inst=instances[1]
-	p=subprocess.call(shlex.split('./freeze.sh %s' %(inst)))
+		#Freezing the filesystem
+		#p = subprocess.Popen("./qemu_check.sh | awk ' $2!=\"Name\" {print $2}'",stdout=subprocess.PIPE,shell=True)
+		p = subprocess.Popen("./final.sh",stdout=subprocess.PIPE,shell=True)
+		(out,err) = p.communicate()
+		p_status = p.wait()
+		op = out.split()
+		instances = []
+		for i in op:
+           	 	x = i.strip('",')
+            		instances.append(x)
+		inst=instances[1]
+		p=subprocess.call(shlex.split('./freeze.sh %s' %(inst)))
 	
-	##Ends
-	webUrl = urllib2.urlopen(urlData)
-	click.echo(urlData)
-	if(webUrl.getcode() == 200):
-		data = webUrl.read()
-		click.echo(data)
-	else:
-		click.echo('Error while fetching data', str(webUrl.getcode()))
-	
+		##Ends
+		webUrl = urllib2.urlopen(urlData)
+		click.echo(urlData)
+		if(webUrl.getcode() == 200):
+			data = webUrl.read()
+			click.echo(data)
+        except Exception as ex:
+		click.echo('Error while creating a snapshot: %s' %ex)
+	finally:
 	#Thawing the filesystem
-	p=subprocess.call(shlex.split('./thaw.sh %s' %inst))
+		p=subprocess.call(shlex.split('./thaw.sh %s' %inst))
 
 
 @display.command()
@@ -154,16 +155,17 @@ def viewsnapshots(config):
 	if config.id==0:
 		print "No UUID found for given cinder id"
 		sys.exit(127)
+	try:
 
-	urlData = config.url + "apiKey=" + config.key + "&command=listStorageSnapshots"  + "&id=" + config.id  +"&response=" + config.res 
-	click.echo(urlData)
-	webUrl = urllib2.urlopen(urlData)
-	#click.echo(urlData)
-	if(webUrl.getcode() == 200):
-		data = webUrl.read()
-		click.echo(data)
-	else:
-		click.echo('Error while fetching data', str(webUrl.getcode()))	
+		urlData = config.url + "apiKey=" + config.key + "&command=listStorageSnapshots"  + "&id=" + config.id  +"&response=" + config.res 
+		click.echo(urlData)
+		webUrl = urllib2.urlopen(urlData)
+		#click.echo(urlData)
+		if(webUrl.getcode() == 200):
+			data = webUrl.read()
+			click.echo(data)
+	except Exception as ex:
+		click.echo('Error while listing snapshots: %s ' %ex)	
 
 
 @display.command()
@@ -192,20 +194,23 @@ def deletesnapshot(config):
 	path = parseJSON(config,data)
 	if path is None:
 		return 'No such snapshot'
-	urlData = config.url + "apiKey=" + config.key + "&command=deleteSnapshot" + "&id=" + config.id + "&path="  + path  + "&response=" + config.res 
-	click.echo(urlData)
-	webUrl = urllib2.urlopen(urlData)
-		data = webUrl.read()
-		click.echo('Delete successful')
-		click.echo(data)
-	else:
-		click.echo('Error while fetching data', str(webUrl.getcode()))
+	try:
+		urlData = config.url + "apiKey=" + config.key + "&command=deleteSnapshot" + "&id=" + config.id + "&path="  + path  + "&response=" + config.res 
+		click.echo(urlData)
+	        webUrl = urllib2.urlopen(urlData)
+        #click.echo(urlData)
+        	if(webUrl.getcode() == 200):
+                	data = webUrl.read()
+                	click.echo((data))
+	                click.echo('Delete Successful')
+        except Exception as ex:
+       		click.echo('Error while deleting snapshot: %s ' %ex)
 
 
 @display.command()
 @pass_config
 def rollbacktosnapshot(config):
-	"""Rollback to snapshot"""
+	"""Rollback to a snapshot"""
 	
 	if config.name is None or config.cinder_id is None:
 	 	if config.name is None:
@@ -228,33 +233,37 @@ def rollbacktosnapshot(config):
 	path = parseJSON(config,data)
 	if path is None:
 		return 'No such snapshot'
-	
+	webUrl=""
 	#Freezing the filesystem
-	p = subprocess.Popen("./final.sh",stdout=subprocess.PIPE,shell=True)
-	(out,err) = p.communicate()
-	p_status = p.wait()
-	op = out.split()
-	instances = []
-	for i in op:
-            	x = i.strip('",')
-            	instances.append(x)
-	inst=instances[1]
-	p=subprocess.call(shlex.split('./freeze.sh %s' %(inst)))
-	
+	try:
+		p = subprocess.Popen("./final.sh",stdout=subprocess.PIPE,shell=True)
+		(out,err) = p.communicate()
+		p_status = p.wait()
+		op = out.split()
+		instances = []
+		for i in op:
+        	    	x = i.strip('",')
+            		instances.append(x)
+		inst=instances[1]
+		p=subprocess.call(shlex.split('./freeze.sh %s' %(inst)))
+		
 	##Ends
-	urlData = config.url + "apiKey=" + config.key + "&command=rollbackToSnapshot"  + "&id=" + config.id + "&path="  + path  + "&response=" + config.res 
-	click.echo(urlData)
-	webUrl = urllib2.urlopen(urlData)
+		urlData = config.url + "apiKey=" + config.key + "&command=rollbackToSnapshot"  + "&id=" + config.id + "&path="  + path  + "&response=" + config.res 
+		click.echo(urlData)
+		webUrl = urllib2.urlopen(urlData)
 	#click.echo(urlData)
-	if(webUrl.getcode() == 200):
-		data = webUrl.read()
-		click.echo((data))
-		click.echo('Rollback successful')
-	else:
-		click.echo('Error while fetching data', str(webUrl.getcode()))		
-	
+		if(webUrl.getcode() == 200):
+			data = webUrl.read()
+			click.echo(data)
+			click.echo('Rollback successful')
+	except Exception as ex:
+		#click.echo('Error while roll back')		
+		#click.echo('Error while rolling back', sys.exc_info()[0])
+		click.echo("Error while roll back: %s" %ex)
+		
+	finally:
 	#Thawing the filesystem
-	p=subprocess.call(shlex.split('./thaw.sh %s' %inst))
+		p=subprocess.call(shlex.split('./thaw.sh %s' %inst))
 
 def listSnapshots(config):
 	urlData = config.url + "apiKey=" + config.key + "&command=" + "listStorageSnapshots" + "&id=" + config.id  +"&response=" + config.res 
@@ -268,15 +277,16 @@ def listSnapshots(config):
 		click.echo('Error while fetching data', str(webUrl.getcode()))
 
 def listFileSystem(config):
-	urlData = config.url + "apiKey=" + config.key + "&command=" + "listFileSystem" +"&response=" + config.res 
-	webUrl = urllib2.urlopen(urlData)
-	#click.echo(webUrl)
-	click.echo(webUrl.getcode())
-	if(webUrl.getcode() == 200):
-		data = webUrl.read()
-		return data
-	else:
-		click.echo('Error while fetching data', str(webUrl.getcode()))		
+	try:
+		urlData = config.url + "apiKey=" + config.key + "&command=" + "listFileSystem" +"&response=" + config.res 
+		webUrl = urllib2.urlopen(urlData)
+		#click.echo(webUrl)
+		click.echo(webUrl.getcode())
+		if(webUrl.getcode() == 200):
+			data = webUrl.read()
+			return data
+	except Exception as ex:
+		click.echo('Error while listing FileSystem: %s' %ex)		
 
 #@display.command()
 def libvirt_ver():
