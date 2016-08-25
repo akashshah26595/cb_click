@@ -51,134 +51,114 @@ Commands:
 
 ```  
 
-* ####To display help page, syntax or available commands.
-
 * ####View all the snapshots of this volume.
  
  ```
-  $ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd viewsnapshots 
+ 	$ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd viewsnapshots 
   
-  { "listDatasetSnapshotsResponse" : { "count":2 ,"snapshot" : [  {
-  "name": "T2",
-  "path": "POOL2/OPENSTACK_ACCOPENSTACK_VSM/bee98fc272984d358ff05a8f3651f9fd@T2",
-  "availMem": "-",
-  "usedMem": "4.73M",
-  "refer": "8.05G",
-  "mountpoint": "-",
-  "timestamp": "Thu Aug 25 2016 10:55",
-  "clones": 0,
-  "poolTakeOver": "noTakeOver",
-  "managedstate": "Available",
-  "type": "instant"
-  }, {
-  "name": "T5",
-  "path": "POOL2/OPENSTACK_ACCOPENSTACK_VSM/bee98fc272984d358ff05a8f3651f9fd@T5",
-  "availMem": "-",
-  "usedMem": "308K",
-  "refer": "8.05G",
-  "mountpoint": "-",
-  "timestamp": "Thu Aug 25 2016 17:05",
-  "clones": 0,
-  "poolTakeOver": "noTakeOver",
-  "managedstate": "Available",
-  "type": "instant"
-  } ] } }
+  	{ "listDatasetSnapshotsResponse" : { "count":2 ,"snapshot" : [  {
+  	  "name": "T2",
+	  "path": "POOL2/OPENSTACK_ACCOPENSTACK_VSM/bee98fc272984d358ff05a8f3651f9fd@T2",
+	  "availMem": "-",
+	  "usedMem": "4.73M",
+	  "refer": "8.05G",
+	  "mountpoint": "-",
+	  "timestamp": "Thu Aug 25 2016 10:55",
+	  "clones": 0,
+	  "poolTakeOver": "noTakeOver",
+	  "managedstate": "Available",
+	  "type": "instant"
+	  }, {
+	  "name": "T5",
+	  "path": "POOL2/OPENSTACK_ACCOPENSTACK_VSM/bee98fc272984d358ff05a8f3651f9fd@T5",
+	  "availMem": "-",
+	  "usedMem": "308K",
+	  "refer": "8.05G",
+	  "mountpoint": "-",
+	  "timestamp": "Thu Aug 25 2016 17:05",
+	  "clones": 0,
+	  "poolTakeOver": "noTakeOver",
+	  "managedstate": "Available",
+	  "type": "instant"
+	  } ] } }
 
 ```  
-
-* ####View all the snapshots of this volume.
 
 * ####Create a new snapshot.
  
  ```
-  $ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd --name Snap1 createsnapshot 
+  	$ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd --name Snap1 createsnapshot 
  
-  Froze 1 filesystem(s)
+	  Froze 1 filesystem(s)
 
-  { "createStorageSnapshotResponse" :  { "StorageSnapshot" : {
-  "id": "27f3ef0d-9637-3cba-95c7-1fdac9588424",
-  "name": "Snap1",
-  "usn": "27f3ef0d96373cba95c71fdac9588424",
-  "lunusn": "3b7834aadd3730799404c8886dc747af",
-  "lunid": "3b7834aa-dd37-3079-9404-c8886dc747af",
-  "scsiEnabled": false
-  } }  }
+	  { "createStorageSnapshotResponse" :  { "StorageSnapshot" : {
+	  "id": "27f3ef0d-9637-3cba-95c7-1fdac9588424",
+	  "name": "Snap1",
+	  "usn": "27f3ef0d96373cba95c71fdac9588424",
+	  "lunusn": "3b7834aadd3730799404c8886dc747af",
+	  "lunid": "3b7834aa-dd37-3079-9404-c8886dc747af",
+	  "scsiEnabled": false
+	  } }  }
 
-Thawed 1 filesystem(s)
+	Thawed 1 filesystem(s)
 
 ```  
-
-* ####Create a new snapshot.
 
 * ####Delete a particular snapshot.
  
  ```
-  $ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd --name Snap1 deletesnapshot
-  
-  { "deleteSnapshotResponse" :  { "DeleteSnapshot" : {
-  "status": "success"
-  } }  }
-  Delete Successful
+	  $ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd --name Snap1 deletesnapshot
+	  
+	  { "deleteSnapshotResponse" :  { "DeleteSnapshot" : {
+	  "status": "success"
+	  } }  }
+	  Delete Successful
 
 ```  
-
-* ####Delete a particular snapshot.
 
 * ####Rollback to a particular snapshot.
  
  ```
-  $ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd --name Snap1 rollbacktosnapshot 
-  
-  Froze 1 filesystem(s)
+	  $ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd --name Snap1 rollbacktosnapshot 
+	  
+	  Froze 1 filesystem(s)
 
-  { "rollbacktoshotresponse" :  { "Rollback" : {} }  }
-  Rollback successful
+	  { "rollbacktoshotresponse" :  { "Rollback" : {} }  }
+	  Rollback successful
 
-  Thawed 1 filesystem(s)
+	  Thawed 1 filesystem(s)
     
 ```  
 
-* ####Rollback to a particular snapshot.
-
 * ####Check whether glance image is stored on CloudByte Storage.
  
  ```
-  $ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd glance_check
-  Glance image is hosted on Cloudbyte
+	  $ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd glance_check
+	  Glance image is hosted on Cloudbyte
 
 ```  
-
-* ####Check whether glance image is stored on CloudByte Storage.
 
 * ####View Cinder Service Status.
  
  ```
-  $ cb cinder_status
+	  $ cb cinder_status
 
-----+------------------+-------------------+------+---------+-------+----------------------------+-----------------+
-|      Binary      |        Host       | Zone |  Status | State |         Updated_at         | Disabled Reason |
-+------------------+-------------------+------+---------+-------+----------------------------+-----------------+
-| cinder-scheduler |       cbnew       | nova | enabled |   up  | 2016-08-25T12:18:40.000000 |        -        |
-|  cinder-volume   |  cbnew@cloudbyte  | nova | enabled |   up  | 2016-08-25T12:18:43.000000 |        -        |
-|  cinder-volume   | cbnew@lvmdriver-1 | nova | enabled |  down | 2016-07-27T11:05:07.000000 |        -        |
-+------------------+-------------------+------+---------+-------+----------------------------+-----------------+
+	----+------------------+-------------------+------+---------+-------+----------------------------+-----------------+
+	|      Binary      |        Host       | Zone |  Status | State |         Updated_at         | Disabled Reason |
+	+------------------+-------------------+------+---------+-------+----------------------------+-----------------+
+	| cinder-scheduler |       cbnew       | nova | enabled |   up  | 2016-08-25T12:18:40.000000 |        -        |
+	|  cinder-volume   |  cbnew@cloudbyte  | nova | enabled |   up  | 2016-08-25T12:18:43.000000 |        -        |
+	|  cinder-volume   | cbnew@lvmdriver-1 | nova | enabled |  down | 2016-07-27T11:05:07.000000 |        -        |
+	+------------------+-------------------+------+---------+-------+----------------------------+-----------------+
   
 
 ```  
 
-* ####View Cinder Service Status.
-
 * ####Find all the Cinder Volume ID's of Cloudbyte Storage.
  
- ```
- 
-  $ cb cinder_list 
-  7569df37-30cc-4316-8e21-4cff774ccee5
-  bee98fc2-7298-4d35-8ff0-5a8f3651f9fd
+``` 
+	  $ cb cinder_list 
+	  7569df37-30cc-4316-8e21-4cff774ccee5
+	  bee98fc2-7298-4d35-8ff0-5a8f3651f9fd
   
 ```  
-
-* ####Find all the Cinder Volume ID's of Cloudbyte Storage.
-
-
-
