@@ -151,13 +151,12 @@ Commands:
 	+------------------+-------------------+------+---------+-------+----------------------------+-----------------+
   
 
-```  
+ ```  
 
 * ####Find all the Cinder Volume ID's of Cloudbyte Storage.
  
-``` 
-	  $ cb cinder_list 
-	  7569df37-30cc-4316-8e21-4cff774ccee5
-	  bee98fc2-7298-4d35-8ff0-5a8f3651f9fd
-  
-```  
+ ``` 
+  $ cb cinder_list 
+  7569df37-30cc-4316-8e21-4cff774ccee5
+  bee98fc2-7298-4d35-8ff0-5a8f3651f9fd
+ ```  
