@@ -27,6 +27,7 @@
 
 ##How to use this CLI
 * ####To display help page, syntax or available commands.
+ 
  ```
   $ cb 
   $ cb --help
@@ -47,10 +48,11 @@ Commands:
   rollbacktosnapshot  Rollback to a snapshot
   viewsnapshots       Displays all the snapshots for given cinder...
 
- ```  
+```  
 
 * ####View all the snapshots of this volume
-   ```
+ 
+```
 	$ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd viewsnapshots
 
 { "listDatasetSnapshotsResponse" : { "count":2 ,"snapshot" : [  {
@@ -79,12 +81,13 @@ Commands:
   "type": "instant"
 } ] } }
 
- ```
+```
 
 * ####Create a new snapshot
  
 ```
-$ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd --name Snap1 createsnapshot	
+
+	$ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd --name Snap1 createsnapshot	
 
 Froze 1 filesystem(s)
 
@@ -102,8 +105,9 @@ Thawed 1 filesystem(s)
 ```
 
 * ####Delete a particular snapshot
-   ```
-	$ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd --name Snap1 deletesnapshot
+
+```
+$ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd --name Snap1 deletesnapshot
 
 { "deleteSnapshotResponse" :  { "DeleteSnapshot" : {
   "status": "success"
@@ -113,8 +117,9 @@ Delete Successful
 ```
 
 * ####Rollback to a particular snapshot
-   ```
-	$ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd --name Snap1 rollbacktosnapshot
+ 
+ ```
+$ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd --name Snap1 rollbacktosnapshot
 
 Froze 1 filesystem(s)
 
@@ -126,31 +131,17 @@ Thawed 1 filesystem(s)
 ```
 
 * ####Check whether glance image is stored on CloudByte Storage
-   ```
-	$ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd glance_check
-	Glance image is hosted on Cloudbyte
+```
+
+$ cb --cinder_id bee98fc2-7298-4d35-8ff0-5a8f3651f9fd glance_check
+Glance image is hosted on Cloudbyte
  
 ```
 
 * ####View Cinder Service Status
    
-   ```
-	$ cb cinder_status
-
-----+------------------+-------------------+------+---------+-------+----------------------------+-----------------+
-|      Binary      |        Host       | Zone |  Status | State |         Updated_at         | Disabled Reason |
-+------------------+-------------------+------+---------+-------+----------------------------+-----------------+
-| cinder-scheduler |       cbnew       | nova | enabled |   up  | 2016-08-25T12:18:40.000000 |        -        |
-|  cinder-volume   |  cbnew@cloudbyte  | nova | enabled |   up  | 2016-08-25T12:18:43.000000 |        -        |
-|  cinder-volume   | cbnew@lvmdriver-1 | nova | enabled |  down | 2016-07-27T11:05:07.000000 |        -        |
-+------------------+-------------------+------+---------+-------+----------------------------+-----------------+
-
- ```   
-
-* ####View Cinder Service Status
-   
-   ```
-	$ cb cinder_status
+```
+$ cb cinder_status
 	
 ----+------------------+-------------------+------+---------+-------+----------------------------+-----------------+
 |      Binary      |        Host       | Zone |  Status | State |         Updated_at         | Disabled Reason |
@@ -160,15 +151,15 @@ Thawed 1 filesystem(s)
 |  cinder-volume   | cbnew@lvmdriver-1 | nova | enabled |  down | 2016-07-27T11:05:07.000000 |        -        |
 +------------------+-------------------+------+---------+-------+----------------------------+-----------------+
 
- ```     
+```     
 
 * ####Find all the Cinder Volume ID's of Cloudbyte Storage
-   ```
+```
 	$ cb cinder_list
 	7569df37-30cc-4316-8e21-4cff774ccee5
 	bee98fc2-7298-4d35-8ff0-5a8f3651f9fd
  
-   ```
+```
 
 
 
