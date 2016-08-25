@@ -77,7 +77,7 @@ def mapCinderToID(config,data):
 @display.command()
 @pass_config	
 def createsnapshot(config):
-	"""This method creates a snapshot for provided cinder id"""
+	"""Creates a snapshot for provided cinder id"""
 	
 	if config.name is None or config.cinder_id is None:
 	 	if config.name is None:
@@ -136,10 +136,10 @@ def cinder_list():
 
 
 
-@display.command()
+@display.command() 
 @pass_config
 def viewsnapshots(config):
-	"""This method displays all the snapshots for given cinder id"""
+	"""Displays all the snapshots for given cinder id"""
 	
 	
 	if config.cinder_id is None:
@@ -169,7 +169,7 @@ def viewsnapshots(config):
 @display.command()
 @pass_config
 def deletesnapshot(config):
-	"""Delete a particular snapshot"""
+	"""Delete a snapshot"""
 	
 	if config.name is None or config.cinder_id is None:
 	 	if config.name is None:
@@ -195,8 +195,6 @@ def deletesnapshot(config):
 	urlData = config.url + "apiKey=" + config.key + "&command=deleteSnapshot" + "&id=" + config.id + "&path="  + path  + "&response=" + config.res 
 	click.echo(urlData)
 	webUrl = urllib2.urlopen(urlData)
-	#click.echo(urlData)
-	if(webUrl.getcode() == 200):
 		data = webUrl.read()
 		click.echo('Delete successful')
 		click.echo(data)
@@ -207,7 +205,7 @@ def deletesnapshot(config):
 @display.command()
 @pass_config
 def rollbacktosnapshot(config):
-	"""Rollback a particular snapshot"""
+	"""Rollback to snapshot"""
 	
 	if config.name is None or config.cinder_id is None:
 	 	if config.name is None:
@@ -356,8 +354,6 @@ def glance_check(config):
 	#for i in op:
 #		if k==2:
 #			print "\n"
-#			k=0
-#	    	print i,"\t",
 #	    	k=k+1
 #	print
 
