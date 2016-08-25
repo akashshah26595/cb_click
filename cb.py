@@ -126,7 +126,7 @@ def createsnapshot(config):
 @display.command()
 #@pass_config	
 def cinder_list():
-	"""This method displays all the cinder id of volumes on Cloudbyte Server"""
+	"""Displays cinder id's of volumes on Cloudbyte Server"""
 	p = subprocess.Popen("./cinder_list.sh",stdout=subprocess.PIPE,shell=True)
 	(out,err) = p.communicate()
 	p_status = p.wait()
@@ -324,11 +324,12 @@ def qemu_check():
 @pass_config
 def cinder_status(config):
 	"""This method displays status of cinder services"""	
-	p = subprocess.Popen("./cinder_services.sh",stdout=subprocess.PIPE,shell=True)
-	(out,err) = p.communicate()
-	p_statusNot  = p.wait()
-	op = str(out).strip()
-	print op
+	p=subprocess.call('./cinder_service.sh',shell=True)
+	#p = subprocess.Popen("./cinder_services.sh",stdout=subprocess.PIPE,shell=True)
+	#(out,err) = p.communicate()
+	#p_statusNot  = p.wait()
+	#op = str(out).strip()
+	#print op
 	#click.echo('Libvirt Version: %s' %op)
 	#k=0
 	#for i in op:
